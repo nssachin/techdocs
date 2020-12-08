@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.asciidoctor.maven</groupId>
-    <artifactId>asciidoc-multiple-inputs-example</artifactId>
+    <artifactId>technotes</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>AsciiDoc</name>
     <description>Tech docs using AsciiDoc maven plugin to convert to html files</description>
