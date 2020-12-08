@@ -2,8 +2,8 @@
 
 Below are some of notes captured as part of learning:
 
-* [Junit 5](techdocs/src/docs/asciidoc/junit5)
-* [Kubernetes (k8s)](techdocs/src/docs/asciidoc/k8s)
+* [Junit 5](techdocs/tree/main/src/docs/asciidoc/junit5)
+* [Kubernetes (k8s)](techdocs/tree/main/src/docs/asciidoc/k8s)
 
 ## Usage
 All the notes are in asciidoc format. Convert the AsciiDoc to HTML5 by invoking `mvn` (configured as the default goal)
