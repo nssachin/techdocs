@@ -1,0 +1,16 @@
+== Miscellaneous
+
+
+- By default Junit creates new instance of each test class before executing each test methods. We can control this by `@TestInstance` annotation
+====
+[source,java]
+----
+@TestInstance(TestInstance.Lifecycle.PER_METHOD) // <1>
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) // <2>
+public class AppTest
+----
+<1> Default lifecycle
+<2> Per class
+
+====
+- Use @Disabled annotation to disable any test methods

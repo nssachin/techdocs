@@ -1,0 +1,19 @@
+@startuml
+title TestMethodTestDescriptior
+
+(*) --> "invokeBeforeEachCallbacks(context)"
+note bottom: <i>BeforeEachCallbacks</i> extention is invoked
+-right->"invokeBeforeEachMethods(context)" #aqua
+note top: <i>@BeforeEach</i> method is invoked
+-right-> "invokeBeforeTestExecutionCallbacks(context)"
+note top: <i>BeforeTestExecutionCallback</i> extention is invoked
+----> "<b>invokeTestMethod(...)</b>" #LightSkyBlue
+note right: <i>@Test</i> method is invoked
+-left-> "invokeAfterTestExecutionCallbacks(context)"
+note top: <i>AfterTestExecutionCallback</i> extention is invoked
+-left-> "invokeAfterEachMethods(context)" #aqua
+note top: <i>@AfterEach</i> method is invoked
+-left-> "invokeAfterEachCallbacks(context)" 
+note top: <i>AfterEachCallback</i> extention is invoked
+-->(*)
+@enduml

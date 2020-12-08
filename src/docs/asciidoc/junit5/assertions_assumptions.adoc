@@ -1,0 +1,15 @@
+== Assertions and Assumptions
+:imagesdir: ./images
+
+=== Assertions
+
+image::assertions.jpg[]
+
+=== Assumptions
+
+* Conditional test execution based on assumptions
+* Failed assumptions results in test being aborted
+
+image::assumptions.jpg[]
+
+

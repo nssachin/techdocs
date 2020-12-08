@@ -1,0 +1,93 @@
+= Junit 5 
+:imagesdir: ./images
+:toc: left
+:toclevels: 2                                                       
+:toc-title: Junit 5
+:doctype: book
+
+== Overview
+Junit is open source framework to write and run repeatable tests
+
+IMPORTANT: Add history timeline
+== Goals of Junit 5
+* Modernize
+* Modularize
+* Extensibile
+* Backward compatibile
+
+
+== Concerns
+.Source Code
+[%collapsible]
+====
+.Junit source code
+[caption="Figure 1: "]
+image::junit_internal.JPG[]
+
+
+.JUnit4IdeaTestRunner.class Source Code
+[caption="Figure 2: "]
+image::Junit4_jetbrains.JPG[]
+====
+
+'''
+
+.Intellij Issue
+[%collapsible]
+====
+.Junit 4.12 Intellij Idea Issue
+[caption="Figure 3: "]
+image::junit_960.JPG[]
+====
+
+== Big Picture
+.Big Picture
+image::junit5-high-level.jpg[]
+
+.Maven dependency
+[caption=""]
+====
+----
+ <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>${junit.jupiter.version}</version> // <1>
+    <scope>test</scope>
+ </dependency>
+----
+<1> - `5.6.2`
+
+====
+
+image::junit5-dependency.jpg[]
+
+=== API Status
+image::junit5-Status.jpg[]
+
+IMPORTANT: add Junit arch. diagram
+
+
+== Language changes
+* org.junit.Test --> org.junit.jupiter.api.Test
+* org.junit.Assert.* --> org.junit.jupiter.api.Assertions.*
+* @Ignored --> @Disabled
+* @BeforeClass/@Before --> @BeforeAll/@BeforeEach
+* @AfterClass/@After --> @AfterAll/@AfterEach
+* @RunWith --> @ExtendWith
+
+
+== Test Phase
+.Test Phases
+image::Test-Phase.jpg[]
+
+* Setup - any preconditions to the test
+* Exercise/Act - operation on the test performed 
+* Verify - assertion
+* Cleanup
+
+include::assertions_assumptions.adoc[]
+
+include::extension.adoc[]
+
+include::misc.adoc[]
+

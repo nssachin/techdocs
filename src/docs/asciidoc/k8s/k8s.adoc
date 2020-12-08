@@ -1,0 +1,266 @@
+= Kubernetes
+:experimental:
+:imagesdir: ./images
+:toc: left
+:toclevels: 2                                                       
+:toc-title: k8s
+:toc-collapsable:
+
+== Overview
+Kubernetes aka k8s is all about automated management of containerized applications also known as container orchestration tool.
+
+some of the keywords which we often hear in k8s:
+
+- Containers - Simply that wraps s/w in independent portable packages making it easy to quickly run in any environment (private or cloud or on-premise)
+- PODA - Package Once Deploy Anywhere
+- Cluster - One of more m/c(Nodes) that are connected to work as a single unit. It will have at-least one Master node and one or more worker nodes
+- Node - machine, could be physical / virtual machine. It was called minions in the past
+- Master - another node with kubernetes installed and configured as master. It is responsible for orchestration of containers on worker nodes
+- Pods - smallest deployable units of computing that can be created and managed in Kubernetes. Kind of wrapper/ abstraction over containers
+- Containers - docker or rkt which is where our apps live
+- Services - Expose your apps outside the cluster
+- Deployments
+- Replication Controller - Job to make sure desired no. of pods = actual no. of pods. Fault tolerance mechanism. Can think of Auto scaling in AWS EC2
+
+=== Nodes
+- a machine physical or virtual one
+- Worker nodes , previously called as minions 
+- Node can be either Master node or worker node
+- Cluster is multiple machines connected to work together
+- For HA have odd number of nodes (3, 5 etc)
+
+== CKAD
+.CKAD
+[caption="Figure 1: "]
+image::ckad.jpg[]
+
+== K8s Objects
+
+Any kubernetes resourse would have these fields
+
+.API Resources
+[caption="Figure 2: "]
+image::api.jpg[]
+
+.sample.yaml
+[source,yaml]
+----
+include::sample.yaml[]
+----
+<1> Which version of the Kubernetes API you're using to create this object
+<2> What kind of object you want to create
+<3> Data that helps uniquely identify the object, including a name string, UID, and optional namespace
+<4> What state you desire for the object
+
+=== Pods
+- Basic atomic unit of deployment
+- group of one or more containers - share the context (share IP, port, host name, storage)
+- Kubernetes manage the Pods rather than the container directly
+- `apiVersion: v1`
+
+Below is a sample POD spec yaml file
+
+[grid="cols", frame="none"]
+|===
+^| YAML ^| POD ^|RestartPolicy
+
+a|
+.pod.yaml
+[source,yaml]
+----
+include::pod.yaml[]
+----
+a| image::pods.JPG[]
+a| image::pod-restart_policy.JPG[]
+
+|===
+
+==== Commands
+- `kubectl get pods` -> list all pods in a cluster
+  - `kubectl describe pod <POD_NAME>` -> details of the running pod, events, container status
+  - `kubectl delete pod <POD_NAME>` -> delete a pod
+  - `kubectl apply -f <YAML_FILE_NAME>` -> create pod definition via yaml file
+  - `kubectl get pods -o wide` -> prints some additional columns
+  - `kubectl get pods --show-labels` -> list pods along with label details
+  - `kubectl get pod <pod-name> -o yaml > pod-definition.yaml` -> extract the pod definition to a file
+  - `kubectl edit pod <pod-name>` -> command to edit pod properties
+  - `kubectl label pod <pod-name> <KEY>=<Value>` -> manual labelling the pod
+  - `kubectl get pods --show-labels` -> see the labels automatically generated for each Pod
+
+=== RelicaSet
+- Used to guarantee the availability of a specified number of identical Pods
+- `apiVersion: apps/v1`
+- Below are the building blocks of a ReplicaSet:
+ - selector - specifies how to identify Pods it can acquire
+ - replicas - number of replicas indicating how many Pods it should be maintaining
+ - pod template - the data of new Pods it should create to meet the number of replicas criteria
+- ReplicaSets are very similar to ReplicaControllers and serve the same purpose except ReplicaControllers dont have `selector` field
+- ReplicaSets do not support a rolling update directly
+- Default value of replicas is `1`
+
+Below is a sample ReplicaSet spec yaml file
+
+.rs.yaml
+[source,yaml]
+----
+include::rs.yaml[]
+----
+<1> Define metadata such as labels for ReplicaSet
+<2> Spec details of the ReplicaSet 
+<3> `.spec.template.metadata.labels` must match `spec.selector`, or it will be rejected by the API
+<4> Pod Template which deifnes Pod metadata such as labels and PodSpec
+
+
+==== Commands
+- `kubectl get rs` -> list all rs in a cluster
+- `kubectl describe rs <RS_NAME>` -> details of ReplicaSet
+- `kubectl delete rs <RS_NAME>` -> delete a rs and also deletes underlying pods
+- `kubectl scale --replicas=2 -f <RS_NAME>` - scale ReplicaSet using commandline
+- `kubectl replace -f <RS_NAME>` - replace/update existing ReplicaSet
+
+=== Deployments
+Pods -> ReplicaSet -> Deployments
+
+- `apiVersion: apps/v1` 
+
+[grid="cols", frame="none"]
+|===
+^| YAML ^| Deployment
+
+a| 
+[source,yaml]
+----
+include::deploy-definition.yaml[]
+----
+<1> Deployment name & labels definition
+<2> Label selector for the Pods targetted by the Deployment
+<3> Pod template and has exactly the same schema as Pod
+a| image::deployments.JPG[]
+|===
+
+==== Commands
+- `kubectl create deployment <Deployment_Name> --image=<Image Name>` -> Imerative way to create a Deployment
+- `kubeclt rollout status deployment/<Deployment_Name>`
+- `kubectl rollout undo deployment/<Deployment_Name>` -> Rollback/Undo a deploylment
+
+
+=== Services
+*What?*
+
+The Service resource lets us expose an application running in Pods to be reacable from outside our cluster.
+
+As we have seen previously Pods are mortal i.e they are born and when they die they are not restored. K8s gives Pods their own IP address so in a Deployment the set of Pods running in one moment in time could differ the set of Pods running 
+a moment later. It is not possible to track each of the Pods IP address to connect, Service resource is used to bridge this issue or in another words performs service discovery mechanism.
+
+*How?*
+
+The pods targeted by a Service is usually determined by a `selector` defined in the configuration fiel. The `selector` acts as a filter to list the resources based on labels.
+
+
+=== Jobs
+
+
+[grid="cols", frame="none"]
+|===
+^| Jobs ^| Restart-Policy
+
+a|image::jobs.JPG[]
+a|image::job-restart_policy.JPG[]
+
+|===
+
+.Jobs.yaml
+[source,yaml]
+----
+include::job-def.yaml[]
+----
+
+=== CronJobs
+
+[grid="cols", frame="none"]
+|===
+^| CronJobs ^| Restart-Policy
+
+a|image::cronjobs.JPG[]
+a|image::job-restart_policy.JPG[]
+
+|===
+
+
+
+=== Namespaces
+
+- Abstraction used by k8s to support multiple virtual cluster on same physical cluster
+- `apiVersion: v1`
+- Names of resources need to be unique within a namespace, but not across namespaces
+- Kubernetes starts with three initial namespaces: `default`, `kube-system`, `kube-public`
+
+.ns.yaml
+[source,yaml]
+----
+include::ns.yaml[]
+----
+
+=== ConfigMaps
+
+- API object used to store non-confidential data in key-value pairs which can then be consumed by Pods
+- `apiVersion: v1`
+- `envFrom` to define all of the ConfigMap’s data as container environment variables
+- ConfigMap can only be referenced by pods residing in the same namespace
+
+.cm.yaml
+[source,yaml]
+----
+include::cm.yaml[]
+----
+
+=== Secrets
+
+- A Secret is an object that contains a small amount of sensitive data such as a password, a token, or a key. It is similar to ConfigMaps except it is used to store sensitive informations
+- `apiVersion: v1`
+- Individual secrets are limited to 1MiB in size
+
+.secrets.yaml
+[source,yaml]
+----
+include::secrets.yaml[]
+----
+<1> base64 encoding using `echo -n 'admin' | base64`
+
+
+'''
+
+=== Kubectl short-names
+
+.kubectl Short-names
+[width="35%"]
+include::shortcuts.adoc[]
+
+== Useful Commands:
+
+Minikube Commands
+```
+minikube start
+minikube stop
+minikube status
+minikube ip
+minikube delete
+```
+
+Version of your K8S server & client
+```
+kubectl version
+```
+- `kubectl run hello-minikube` : deploy app in cluster
+- `kubectl cluster-info` : info about cluster
+- `kubectl get nodes` : list all nodes in a cluster
+
+
+== Resources
+
+- CKAD Sample Excercises -> https://github.com/dgkanatsios/CKAD-exercises/[window=_blank]
+- https://wely-lau.net/2020/03/23/learning-materials-and-8-tips-to-pass-ckad-certified-kubernetes-application-developer-exam/[window=_blank]
+- https://github.com/lucassha/CKAD-resources[window=_blank]
+- https://medium.com/@harioverhere/ckad-certified-kubernetes-application-developer-my-journey-3afb0901014[window=_blank]
+- https://www.linkedin.com/pulse/my-ckad-exam-experience-atharva-chauthaiwale/[window=_blank] 
+- https://www.howtogeek.com/412055/37-important-linux-commands-you-should-know/[window=_blank]
