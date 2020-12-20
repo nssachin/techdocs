@@ -32,7 +32,7 @@ some of the keywords which we often hear in k8s:
 == CKAD
 .CKAD
 [caption="Figure 1: "]
-image::ckad.jpg[]
+image::ckad.JPG[]
 
 == K8s Objects
 
