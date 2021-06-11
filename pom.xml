@@ -104,6 +104,52 @@
                             </attributes>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>asciidoc-docker-to-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/docs/asciidoc/docker</sourceDirectory>
+							<outputDirectory>${project.build.directory}/generated-docs/docker</outputDirectory>
+                            <backend>html5</backend>
+			     <doctype>book</doctype>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                                <toc>left</toc>
+                                <icons>font</icons>
+                                <sectanchors>true</sectanchors>
+                                <!-- set the idprefix to blank -->
+                                <idprefix/>
+                                <idseparator>-</idseparator>
+                                <docinfo1>true</docinfo1>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>asciidoc-angular-to-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/docs/asciidoc/angular</sourceDirectory>
+							<outputDirectory>${project.build.directory}/generated-docs/angular</outputDirectory>
+                            <backend>html5</backend>
+			     <doctype>book</doctype>
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                                <toc>left</toc>
+                                <icons>font</icons>
+                                <sectanchors>true</sectanchors>
+                                <!-- set the idprefix to blank -->
+                                <idprefix/>
+                                <idseparator>-</idseparator>
+                                <docinfo1>true</docinfo1>
+                            </attributes>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
