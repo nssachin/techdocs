@@ -1,0 +1,110 @@
+== Angular
+
+=== Overview
+
+.What?
+
+
+.Why?
+
+
+.Benefits
+
+
+
+.Component Based Model -Overview
+
+- In traditional Front End Application where we focus on HTML(static portion) & JS code(dynamic & embedded in HTML) separately. In Angular apps we think in terms of components based approach
+- Each components in turns includes both the HTML & JS code within it as per  needs. It takes care of both the UI look and the user actions if any. Each components needs to be self sufficient by itself and can be plugged in
+- Need to register each components to Angular and you give a name so that it can be used, Angular in turns registers these components and renders in UI
+- Each components in turn can have many sub components. Every angular application will have a root component where we have all the main components and the main components in turn will have the child/sub components
+- Every angular component is typically a typescript class. HTML, CSS are extra attachment to typescript file
+- Data binding in Angular refers to binding data in component instance to HTML template. Any changes to data gets automatically updated to view. The data binding is achieved using double curly brackets {{ __}}. Data from ts file --> HTML => One way data binding
+- If you apply any styles in *.component.css file the styles are applied only to that component. If you need a global styles add in styles.css in the root folder. This works of the way angular manages styling using css [property] selector
+
+
+=== CLI
+- npm install -g @angular/cli --> this is called a scoped packaged name and is of format @group/package
+- ng -v to verify if angular cli has been installed
+- ng new <<project name> - creates a basic angular projects
+- ng serve - starts an angular project
+- ng generate component <<Name of your component>> - Create a new component with .html, .css, .ts, .spec.ts files
+
+
+.Template Interpolation
+The double-curly will cause angular to evaluate the expression be it a member variable, arithmetic expressions or a method call and render the output.
+
+.Directive
+An attribute such as ngFor you add to an element. There are some built in directives in Angular.
+
+.Passing inputs to Components
+
+- Use the `@Input()` decorator to designate a component member variable as an input and thus configure the component API
+- Input annotation is part of @angular/core package
+- create a member variable & declare @input and tell angular what is the attribute you are interested in
+    in the html file you will pass input to components:
+----    
+<app-address-card name="Foo Bar"></app-address-card>
+in .ts file you will do as below
+@Input('name') userName: string = "Default Name";
+----
+- If you want to pass a member variable you need to surround the attribute name with square brackets [] as shown below
+
+`<app-address-card [user]="user"></app-address-card>`
+
+- If you don't add the square brackets it will consider as a string literal
+
+=== Lifecycle
+
+.Overview
+A component has a lifecycle managed by Angular. Angular creates it, renders it, creates and renders its children, checks it when its data-bound properties change, and destroys it before removing it from the DOM.
+After creating a component/directive by calling its constructor, Angular calls the lifecycle hook methods in the following sequence at specific moments:
+
+
+
+
+NOTE: refer to https://angular.io/guide/lifecycle-hooks for more details on the lifecycle hooks
+
+
+=== Angular Module
+
+
+- Modules are thing that consolidates different components.Modules are kind of a container or namespace which contains these different components
+- We can create multiple modules and each modules may contain multiple components
+- A module is nothing but a class with @NgModule angular annotation. We can configure NgModule :
+
+** declarations : define  set of components which belongs to this module
+** imports: Angular import where you establish a dependency on other modules (angular or custom modules).Inter module dependencies
+** providers: define the service which needs to be part of the module
+
+below is a sample `NgModule` annotation which uses declaration and imports (angular & custom modules) configurations:
+
+
+
+
+
+=== Service
+
+
+
+=== Dependency Injection
+
+
+
+=== Rest API calls 
+
+.HTTP Client
+Import HttpClientModule '@angular/common/http' and we should be able to make any rest calls. Typically it is better to import in the root module such as `AppModule.ts`.
+
+[source,js]
+----
+constructor(private srv: TestService, private http: HttpClient) {
+let obs = http.get('https://api.github.com/users/sachinns');
+ obs.subscribe((data) => console.log(data));
+ }
+----
+
+- http.get(..) accepts a URL and returns an Observable since it is an async operation. In angular JS it was called as promise and in Angular 2+ it is called as observable. You can pass a function to the observable, you are basically telling angular that once the async call is done execute my function and perform your logic.
+- To get the response you need to subscribe to the observable and call your method as shown above
+- I have used the fat arrow (called lamda in Java) here but not required you can call a custom function in normal JS way
+

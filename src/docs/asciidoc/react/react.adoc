@@ -1,0 +1,7 @@
+# ReactJS
+
+
+### Shortcut commands
+- `New React Project`: npx create-react-app <PROJECT_NAME>
+- 
+
